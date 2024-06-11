@@ -1,6 +1,17 @@
 const fs = require ("fs");
 const jwt = require ("jsonwebtoken")
 
+const getProjects = async (req, res) => {
+  try {
+    const data = await fs.readFileSync('./userData.json', 'utf8');
+    const json = JSON.parse(data);
+    res.status(200).json(json);
+  } catch (error) {
+    console.error('Error al leer los proyectos del archivo JSON:', error);
+    res.status(500).send('Error al procesar la solicitud');
+  }
+};
+
 const addProjects = async (req, res) => {
     try {
 
@@ -68,6 +79,7 @@ const login = (req, res) => {
   try {
     const logedUser = req.body.user;
     const userPass = req.body.password;
+    console.log(logedUser, userPass)
     if (logedUser !== process.env.USER_NAME || userPass !== process.env.USER_PASSWORD) return res.send("Usuario incorrecto")
     jwt.sign({name: logedUser}, process.env.SECRETJWT, {expiresIn: '1h'}, (error,token) => {
       if (error) {
@@ -83,6 +95,7 @@ const login = (req, res) => {
 }
 
 module.exports = {
+  getProjects,
   addProjects,
   deleteUser,
   editField,

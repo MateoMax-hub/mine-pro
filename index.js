@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const { addProjects, deleteUser, editField, login } = require ('./projectsController');
+const { addProjects, deleteUser, editField, login, getProjects } = require ('./projectsController');
 const { authJwt } = require ('./verifyJwt')
 require("dotenv").config()
 
@@ -11,6 +11,7 @@ app.use(cors());
 
 app.use(express.urlencoded({ extended: true }));
 
+app.get('/projects', authJwt, getProjects);
 app.post('/add', authJwt, addProjects)
 app.post('/authLogin', login)
 app.delete("/delete/:id", authJwt, deleteUser)
