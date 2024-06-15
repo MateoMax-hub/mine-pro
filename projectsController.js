@@ -75,6 +75,27 @@ const editField = async (req, res) => {
   }
 }
 
+const hideProject = async (req, res) => {
+  try {
+    const idToHide = req.params.id;
+    const data = await fs.readFileSync('./userData.json', 'utf8');
+    const json = JSON.parse(data);
+    
+    const updatedProjects = json.map((project) => {
+      if (project.id === idToHide) {
+        return { ...project, visible: !project.visible };
+      }
+      return project;
+    });
+    
+    await fs.writeFileSync('userData.json', JSON.stringify(updatedProjects), 'utf8');
+    res.send(`Proyecto con ID ${idToHide} actualizado correctamente`);
+  } catch (error) {
+    console.error('Error al ocultar el proyecto:', error);
+    res.status(500).send('Error al procesar la solicitud');
+  }
+};
+
 const login = (req, res) => {
   try {
     const logedUser = req.body.user;
@@ -99,5 +120,6 @@ module.exports = {
   addProjects,
   deleteUser,
   editField,
-  login
+  login,
+  hideProject
 }
