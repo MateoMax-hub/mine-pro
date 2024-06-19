@@ -1,5 +1,7 @@
 const fs = require ("fs");
 const jwt = require ("jsonwebtoken")
+require("dotenv").config()
+const nodemailer = require('nodemailer');
 
 const getProjects = async (req, res) => {
   try {
@@ -115,11 +117,42 @@ const login = (req, res) => {
   }
 }
 
+const transporter = nodemailer.createTransport({
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true,
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS.replace(/-/g," "),
+  },
+});
+
+const sendMail = (req, res) => {
+  const { name, email, phone, comments } = req.body;
+  const file = req.files?.file;
+  
+  const mailOptions = {
+    to: process.env.RECIPIENT_EMAIL,
+    subject: `New contact from ${name}`,
+    text: `Name: ${name}\nEmail: ${email}\nPhone: ${phone}\nComments: ${comments}`,
+    attachments: file ? [{ filename: file.name, content: file.data }] : [],
+  };
+
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.error('Error sending email:', error);
+      return res.status(500).send('Error sending email');
+    }
+    res.status(200).json({ message: 'Envío exitoso' });
+  });
+}
+
 module.exports = {
   getProjects,
   addProjects,
   deleteUser,
   editField,
   login,
-  hideProject
+  hideProject,
+  sendMail
 }
