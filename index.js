@@ -8,14 +8,14 @@ require("dotenv").config();
 
 const app = express();
 
-const corsOptions = {
-  origin: 'https://mine-project-one.vercel.app',
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  optionsSuccessStatus: 200
-};
+// const corsOptions = {
+//   origin: 'https://mine-project-one.vercel.app',
+//   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+//   allowedHeaders: ['Content-Type', 'Authorization'],
+//   optionsSuccessStatus: 200
+// };
 
-app.use(cors(corsOptions));
+app.use(cors("*"));
 app.use(express.json({ limit: '50mb', extended: true }));
 app.use(express.urlencoded({ extended: true }));
 
