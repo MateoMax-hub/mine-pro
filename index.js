@@ -9,7 +9,7 @@ require("dotenv").config();
 const app = express();
 
 const corsOptions = {
-  origin: 'https://mine-project-one.vercel.app/',
+  origin: 'https://mine-project-one.vercel.app',
   optionsSuccessStatus: 200
 };
 
