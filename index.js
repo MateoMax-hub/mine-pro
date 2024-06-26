@@ -10,6 +10,8 @@ const app = express();
 
 const corsOptions = {
   origin: 'https://mine-project-one.vercel.app',
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
   optionsSuccessStatus: 200
 };
 
