@@ -129,13 +129,13 @@ const transporter = nodemailer.createTransport({
 
 const sendMail = (req, res) => {
   const { name, email, phone, comments } = req.body;
-  const file = req.files?.file;
-  
+  const file = req.file;
+
   const mailOptions = {
     to: process.env.RECIPIENT_EMAIL,
-    subject: `New contact from ${name}`,
-    text: `Name: ${name}\nEmail: ${email}\nPhone: ${phone}\nComments: ${comments}`,
-    attachments: file ? [{ filename: file.name, content: file.data }] : [],
+    subject: `Nuevo contacto de ${name}`,
+    text: `Nombre: ${name}\nEmail: ${email}\nTeléfono: ${phone}\nComentarios: ${comments}`,
+    attachments: file ? [{ filename: file.originalname, path: file.path }] : [],
   };
 
   transporter.sendMail(mailOptions, (error, info) => {
